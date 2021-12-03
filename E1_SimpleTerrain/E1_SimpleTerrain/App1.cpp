@@ -7,6 +7,8 @@ App1::App1()
 	m_Terrain = nullptr;
 	shader = nullptr;
 	light = nullptr;
+
+	faultMenuOpen = false;
 }
 
 void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in, bool VSYNC, bool FULL_SCREEN)
@@ -117,12 +119,11 @@ void App1::gui()
 
 	ImGui::SliderInt( "Terrain Resolution", &terrainResolution, 2, 1024 );
 
-	//modify the variables for the faulting algorithm
-	ImGui::SliderInt("Number of Faults.", &totalFaults, 1, 50);
-	ImGui::SliderFloat("Initial Fault Value.", &faultValue, 0.1, 10, "Pos : (%.3f)", 1.0f);
-	if (ImGui::Button("Apply Fault."))
+	FaultGUI();
+	
+	if (ImGui::Button("Smoothen"))
 	{
-		m_Terrain->Fault(totalFaults, faultValue);
+		m_Terrain->Smooth();
 		m_Terrain->Regenerate(renderer->getDevice(), renderer->getDeviceContext());
 	}
 
@@ -139,3 +140,28 @@ void App1::gui()
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
+void App1::FaultGUI()
+{
+	//modify the variables for the faulting algorithm
+	if (faultMenuOpen == false)
+	{
+		if (ImGui::Button("Open Fault Menu"))
+		{
+			faultMenuOpen = true;
+		}
+	}
+	if (faultMenuOpen == true)
+	{
+		ImGui::SliderInt("Number of Faults", &totalFaults, 1, 50);
+		ImGui::SliderFloat("Initial Fault Value", &faultValue, 0.1, 10, "Pos : (%.3f)", 1.0f);
+		if (ImGui::Button("Apply Fault"))
+		{
+			m_Terrain->Fault(totalFaults, faultValue);
+			m_Terrain->Regenerate(renderer->getDevice(), renderer->getDeviceContext());
+		}
+		if (ImGui::Button("Close Menu"))
+		{
+			faultMenuOpen = false;
+		}
+	}
+}

@@ -11,6 +11,7 @@ public:
 
 	void Fault(int numberOfFaults, float initiaFaultValue);
 	void Flat();
+	void Smooth();
 
 	const inline int GetResolution(){ return resolution; }
 

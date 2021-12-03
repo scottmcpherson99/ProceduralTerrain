@@ -258,6 +258,73 @@ void TerrainMesh::Flat()
 	}
 }
 
+
+
+//smoothen the terrain
+void TerrainMesh::Smooth()
+{
+	float heightValue = 0.0f;
+	int edges = 0;
+	//Scale everything so that the look is consistent across terrain resolutions
+	const float scale = terrainSize / (float)resolution;
+
+	//change the value of the current points height to be an average of itself and its surrounding neighbours
+	for (int j = 0; j < (resolution); j++) {
+		for (int i = 0; i < (resolution); i++) {
+
+			//reset values for new point
+			edges = 0;
+			heightValue = 0;
+
+			//check if the point towards both negative axis exists on the plane
+			if ((i - 1) > 0)
+			{
+				if ((j - 1) > 0)
+				{
+					heightValue = heightMap[((j - 1) * resolution) + (i - 1)];
+					edges++;
+				}
+			}
+			//check if the point towards the negative i axis and towards the positive j axis exists
+			if (i - 1 > 0)
+			{
+				if (j + 1 < resolution)
+				{
+					heightValue += heightMap[((j + 1) * resolution) + (i - 1)];
+					edges++;
+				}
+			}
+			//check if the point towards the positive i axis and towards the negative j axis exists
+			if (i + 1 < resolution)
+			{
+				if (j - 1 > 0)
+				{
+					heightValue += heightMap[((j - 1) * resolution) + (i + 1)];
+					edges++;
+				}
+			}
+			//check if the point towards the positive i axis and towards the positive j axis exists
+			if (i + 1 < resolution)
+			{
+				if (j + 1 < resolution)
+				{
+					heightValue += heightMap[((j + 1) * resolution) + (i + 1)];
+					edges++;
+				}
+			}
+
+			//calculate the average height value of the surrounding points
+			if (edges != 0)
+			{
+				heightValue = heightValue / edges;
+			}
+
+			//smoothen out the current point
+			heightMap[(j * resolution) + i] = (heightMap[(j * resolution) + i] + heightValue) / 3.3;
+		}
+	}
+}
+
 //run the faulting algoritm on the terrain
 void TerrainMesh::Fault(int numberOfFaults, float initialFaultValue)
 {
@@ -338,7 +405,8 @@ void TerrainMesh::Fault(int numberOfFaults, float initialFaultValue)
 				}
 			}
 		}
-
+		//decrease the fault value each iteration
+		initialFaultValue *= 0.8;
 
 	}
 

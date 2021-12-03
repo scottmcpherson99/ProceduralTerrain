@@ -19,6 +19,7 @@ public:
 protected:
 	bool render();
 	void gui();
+	void FaultGUI();
 
 private:
 	LightShader* shader;
@@ -28,6 +29,7 @@ private:
 
 	int terrainResolution = 128;
 
+	bool faultMenuOpen;
 	int totalFaults = 4;
 	float faultValue = 3;
 };
