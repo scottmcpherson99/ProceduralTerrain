@@ -1,0 +1,2 @@
+D:\ProceduralTerrain\E1_SimpleTerrain\lib\Debug\DXFramework.pdb
+D:\ProceduralTerrain\E1_SimpleTerrain\DXFramework\x64\Debug\DXFramework.pdb

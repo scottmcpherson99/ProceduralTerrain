@@ -6,6 +6,7 @@ App1::App1()
 {
 	m_Terrain = nullptr;
 	shader = nullptr;
+	light = nullptr;
 }
 
 void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in, bool VSYNC, bool FULL_SCREEN)

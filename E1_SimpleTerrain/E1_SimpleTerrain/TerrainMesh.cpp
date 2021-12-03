@@ -22,12 +22,11 @@ void TerrainMesh::BuildHeightMap() {
 	//Scale everything so that the look is consistent across terrain resolutions
 	const float scale =  terrainSize / (float)resolution;
 
-	//TODO: Give some meaning to these magic numbers! What effect does changing them have on terrain?
 	for( int j = 0; j < ( resolution ); j++ ) {
 		for( int i = 0; i < ( resolution ); i++ ) {
 			height = ( sin( (float)i * 0.1f * scale ) ) * 10.0f;
 			height += ( cos( (float)j * 0.033f * scale ) ) * 10.0f;
-			heightMap[( j * resolution ) + i] = height;
+			heightMap[( j * resolution ) + i] = 0;
 		}
 	}	
 }
@@ -52,8 +51,8 @@ void TerrainMesh::Regenerate( ID3D11Device * device, ID3D11DeviceContext * devic
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	
 	//Calculate and store the height values
-	BuildHeightMap();
-
+	//BuildHeightMap();
+	Fault();
 	// Calculate the number of vertices in the terrain mesh.
 	// We share vertices in this mesh, so the vertex count is simply the terrain 'resolution'
 	// and the index count is the number of resulting triangles * 3 OR the number of quads * 6
@@ -248,4 +247,88 @@ void TerrainMesh::CreateBuffers( ID3D11Device* device, VertexType* vertices, uns
 
 	// Create the index buffer.
 	device->CreateBuffer( &indexBufferDesc, &indexData, &indexBuffer );
+}
+
+void TerrainMesh::Fault()
+{
+	TerrainPoint edge_[3];
+	TerrainPoint currentPoint;
+	int axis;
+	float newPointSide;
+	int chooseSide;
+
+	//pick two random points on the edge of the terrain
+	for (int i = 0; i < 2; i++)
+	{
+		axis = rand() % 4;
+
+		switch (axis)
+		{
+		case 0:
+			edge_[i].X = 0;
+			edge_[i].Y = rand() % 129;
+			break;
+
+		case 1:
+			edge_[i].X = 128;
+			edge_[i].Y = rand() % 129;
+			break;
+
+		case 2:
+			edge_[i].X = rand() % 129;
+			edge_[i].Y = 0;
+			break;
+
+		case 3:
+			edge_[i].X = rand() % 129;
+			edge_[i].Y = 128;
+		}
+	}
+		//get vector of the fault line
+		edge_[2].X = edge_[1].X - edge_[0].X;
+		edge_[2].Y = edge_[1].Y - edge_[0].Y;
+		
+		chooseSide = rand() % 2;
+
+		//check each point in the terrain to see which side of the fault line it is and apply the fault
+		for (int j = 0; j < (resolution); j++) {
+			for (int i = 0; i < (resolution); i++) {
+
+				//get the vector of the current point and the fault line
+				currentPoint.X = j - edge_[0].X;
+				currentPoint.Y = i - edge_[0].Y;
+
+				//perform cross product between the two vectors
+				newPointSide = -((edge_[2].X * currentPoint.Y) - (currentPoint.X * edge_[2].Y));
+
+				//raise or lower each point depending if the value of the cross product is negative or positive
+				if (newPointSide < 0)
+				{
+					if (chooseSide == 0)
+					{
+						heightMap[(j * resolution) + i] = 5;
+					}
+					else if (chooseSide == 1)
+					{
+						heightMap[(j * resolution) + i] = -5;
+					}
+				}
+				else if (newPointSide >= 0)
+				{
+					if (chooseSide == 0)
+					{
+						heightMap[(j * resolution) + i] = -5;
+					}
+					else if (chooseSide == 1)
+					{
+						heightMap[(j * resolution) + i] = 5;
+					}
+				}
+			}
+		}
+	
+
+
+
+
 }
