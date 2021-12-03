@@ -9,9 +9,13 @@ public:
 	void Resize( int newResolution );
 	void Regenerate( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
 
-	void Fault();
+	void Fault(int numberOfFaults, float initiaFaultValue);
+	void Flat();
 
 	const inline int GetResolution(){ return resolution; }
+
+protected:
+	int totalFaults;
 private:
 	void CreateBuffers( ID3D11Device* device, VertexType* vertices, unsigned long* indices );
 	void BuildHeightMap();

@@ -27,6 +27,9 @@ private:
 	Light* light;
 
 	int terrainResolution = 128;
+
+	int totalFaults = 4;
+	float faultValue = 3;
 };
 
 #endif

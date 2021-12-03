@@ -19,6 +19,9 @@ void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeigh
 
 	// Create Mesh object and shader object
 	m_Terrain = new TerrainMesh(renderer->getDevice(), renderer->getDeviceContext());
+	m_Terrain->Flat();
+	m_Terrain->Regenerate(renderer->getDevice(), renderer->getDeviceContext());
+
 	shader = new LightShader(renderer->getDevice(), hwnd);
 
 	light = new Light;
@@ -113,10 +116,21 @@ void App1::gui()
 	ImGui::Checkbox("Wireframe mode", &wireframeToggle);
 
 	ImGui::SliderInt( "Terrain Resolution", &terrainResolution, 2, 1024 );
+
+	//modify the variables for the faulting algorithm
+	ImGui::SliderInt("Number of Faults.", &totalFaults, 1, 50);
+	ImGui::SliderFloat("Initial Fault Value.", &faultValue, 0.1, 10, "Pos : (%.3f)", 1.0f);
+	if (ImGui::Button("Apply Fault."))
+	{
+		m_Terrain->Fault(totalFaults, faultValue);
+		m_Terrain->Regenerate(renderer->getDevice(), renderer->getDeviceContext());
+	}
+
 	if( ImGui::Button( "Regenerate Terrain" ) ) {
 		if( terrainResolution != m_Terrain->GetResolution() ) {
 			m_Terrain->Resize( terrainResolution );
 		}
+		m_Terrain->Flat();
 		m_Terrain->Regenerate( renderer->getDevice(), renderer->getDeviceContext() );
 	}
 

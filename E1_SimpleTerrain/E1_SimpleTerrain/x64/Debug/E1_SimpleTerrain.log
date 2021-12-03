@@ -1,12 +1,14 @@
 ﻿  App1.cpp
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\App1.cpp(122,87): warning C4305: 'argument': truncation from 'double' to 'float'
+  Main.cpp
   TerrainMesh.cpp
 D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(27,48): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(28,58): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(183,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(182,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(50,38): warning C4101: 'indexBufferDesc': unreferenced local variable
 D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(51,25): warning C4101: 'vertexData': unreferenced local variable
 D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(51,37): warning C4101: 'indexData': unreferenced local variable
 D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(50,20): warning C4101: 'vertexBufferDesc': unreferenced local variable
-D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(302,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(314,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Generating Code...
   E1_SimpleTerrain.vcxproj -> D:\ProceduralTerrain\E1_SimpleTerrain\x64\Debug\E1_SimpleTerrain.exe

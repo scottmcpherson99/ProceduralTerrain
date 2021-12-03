@@ -51,8 +51,7 @@ void TerrainMesh::Regenerate( ID3D11Device * device, ID3D11DeviceContext * devic
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	
 	//Calculate and store the height values
-	//BuildHeightMap();
-	Fault();
+	
 	// Calculate the number of vertices in the terrain mesh.
 	// We share vertices in this mesh, so the vertex count is simply the terrain 'resolution'
 	// and the index count is the number of resulting triangles * 3 OR the number of quads * 6
@@ -213,7 +212,6 @@ void TerrainMesh::Regenerate( ID3D11Device * device, ID3D11DeviceContext * devic
 }
 
 //Create the vertex and index buffers that will be passed along to the graphics card for rendering
-//For CMP305, you don't need to worry so much about how or why yet, but notice the Vertex buffer is DYNAMIC here as we are changing the values often
 void TerrainMesh::CreateBuffers( ID3D11Device* device, VertexType* vertices, unsigned long* indices ) {
 
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
@@ -249,7 +247,19 @@ void TerrainMesh::CreateBuffers( ID3D11Device* device, VertexType* vertices, uns
 	device->CreateBuffer( &indexBufferDesc, &indexData, &indexBuffer );
 }
 
-void TerrainMesh::Fault()
+
+//flatten the terrain
+void TerrainMesh::Flat()
+{
+	for (int j = 0; j < (resolution); j++) {
+		for (int i = 0; i < (resolution); i++) {
+			heightMap[(j * resolution) + i] = 0;
+		}
+	}
+}
+
+//run the faulting algoritm on the terrain
+void TerrainMesh::Fault(int numberOfFaults, float initialFaultValue)
 {
 	TerrainPoint edge_[3];
 	TerrainPoint currentPoint;
@@ -257,37 +267,39 @@ void TerrainMesh::Fault()
 	float newPointSide;
 	int chooseSide;
 
-	//pick two random points on the edge of the terrain
-	for (int i = 0; i < 2; i++)
+	for (int iteration = 0; iteration < numberOfFaults; iteration++)
 	{
-		axis = rand() % 4;
-
-		switch (axis)
+		//pick two random points on the edge of the terrain
+		for (int i = 0; i < 2; i++)
 		{
-		case 0:
-			edge_[i].X = 0;
-			edge_[i].Y = rand() % 129;
-			break;
+			axis = rand() % 4;
 
-		case 1:
-			edge_[i].X = 128;
-			edge_[i].Y = rand() % 129;
-			break;
+			switch (axis)
+			{
+			case 0:
+				edge_[i].X = 0;
+				edge_[i].Y = rand() % 129;
+				break;
 
-		case 2:
-			edge_[i].X = rand() % 129;
-			edge_[i].Y = 0;
-			break;
+			case 1:
+				edge_[i].X = 128;
+				edge_[i].Y = rand() % 129;
+				break;
 
-		case 3:
-			edge_[i].X = rand() % 129;
-			edge_[i].Y = 128;
+			case 2:
+				edge_[i].X = rand() % 129;
+				edge_[i].Y = 0;
+				break;
+
+			case 3:
+				edge_[i].X = rand() % 129;
+				edge_[i].Y = 128;
+			}
 		}
-	}
 		//get vector of the fault line
 		edge_[2].X = edge_[1].X - edge_[0].X;
 		edge_[2].Y = edge_[1].Y - edge_[0].Y;
-		
+
 		chooseSide = rand() % 2;
 
 		//check each point in the terrain to see which side of the fault line it is and apply the fault
@@ -306,29 +318,29 @@ void TerrainMesh::Fault()
 				{
 					if (chooseSide == 0)
 					{
-						heightMap[(j * resolution) + i] = 5;
+						heightMap[(j * resolution) + i] += initialFaultValue;
 					}
 					else if (chooseSide == 1)
 					{
-						heightMap[(j * resolution) + i] = -5;
+						heightMap[(j * resolution) + i] -= initialFaultValue;
 					}
 				}
 				else if (newPointSide >= 0)
 				{
 					if (chooseSide == 0)
 					{
-						heightMap[(j * resolution) + i] = -5;
+						heightMap[(j * resolution) + i] -= initialFaultValue;
 					}
 					else if (chooseSide == 1)
 					{
-						heightMap[(j * resolution) + i] = 5;
+						heightMap[(j * resolution) + i] += initialFaultValue;
 					}
 				}
 			}
 		}
-	
 
 
+	}
 
 
 }
