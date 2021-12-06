@@ -12,6 +12,7 @@ public:
 	void Fault(int numberOfFaults, float initiaFaultValue);
 	void Flat();
 	void Smooth();
+	void ParticleDeposition(int numberOfParticlesDropped, int XSize, int YSize, bool dropOrRemove, int iterations);
 
 	const inline int GetResolution(){ return resolution; }
 

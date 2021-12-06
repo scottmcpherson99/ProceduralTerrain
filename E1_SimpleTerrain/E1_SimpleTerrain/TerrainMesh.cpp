@@ -325,6 +325,126 @@ void TerrainMesh::Smooth()
 	}
 }
 
+
+//run the particle deposition algorithm on the terrain
+void TerrainMesh::ParticleDeposition(int numberOfParticlesDropped, int XSize, int YSize, bool dropOrRemove, int iterations)
+{
+	TerrainPoint initialDropLocation;
+	TerrainPoint particleDropLocation;
+	
+
+	//loop the algorithm for the specified number of iterations
+	for (int i = 0; i < iterations; i++)
+	{
+		//choose the drop zone for the algorithm
+		initialDropLocation.X = rand() % resolution;
+		initialDropLocation.Y = rand() % resolution;
+
+		//loop the algorithm for the specified number of particles dropped
+		for (int i = 0; i < numberOfParticlesDropped; i++)
+		{
+			//drop the particle in a random location within the drop zone.
+			particleDropLocation.X = (initialDropLocation.X + rand() % XSize) - (XSize / 2);
+			particleDropLocation.Y = (initialDropLocation.Y + rand() % YSize) - (YSize / 2);
+
+
+			//ensure the drop location is on the heightmap
+			if (particleDropLocation.X < 1)
+			{
+				particleDropLocation.X = 1;
+			}
+			if (particleDropLocation.Y < 1)
+			{
+				particleDropLocation.Y = 1;
+			}
+
+			if (dropOrRemove == true)
+			{
+				//drop particles onto the terrain ensuring the current height is not larger than its surrounding neighbours
+				if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X + 1) * 128 + particleDropLocation.Y])
+				{
+					heightMap[(particleDropLocation.X + 1) * 128 + particleDropLocation.Y] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X - 1) * 128 + particleDropLocation.Y])
+				{
+					heightMap[(particleDropLocation.X - 1) * 128 + particleDropLocation.Y] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y + 1)])
+				{
+					heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y + 1)] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y - 1)])
+				{
+					heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y - 1)] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y + 1)])
+				{
+					heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y + 1)] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y - 1)])
+				{
+					heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y - 1)] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y + 1)])
+				{
+					heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y + 1)] += 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y - 1)])
+				{
+					heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y - 1)] += 1;
+				}
+				else
+				{
+					heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] += 1;
+				}
+			}
+
+			else if (dropOrRemove == false)
+			{
+				//remove particles from the terrain ensuring the current height is not smaller than its surrounding neighbours
+				if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] > heightMap[(particleDropLocation.X + 1) * 128 + particleDropLocation.Y])
+				{
+					heightMap[(particleDropLocation.X + 1) * 128 + particleDropLocation.Y] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[(particleDropLocation.X - 1) * 128 + particleDropLocation.Y])
+				{
+					heightMap[(particleDropLocation.X - 1) * 128 + particleDropLocation.Y] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y + 1)])
+				{
+					heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y + 1)] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y - 1)])
+				{
+					heightMap[particleDropLocation.X * 128 + (particleDropLocation.Y - 1)] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y + 1)])
+				{
+					heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y + 1)] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y - 1)])
+				{
+					heightMap[(particleDropLocation.X + 1) * 128 + (particleDropLocation.Y - 1)] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y + 1)])
+				{
+					heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y + 1)] -= 1;
+				}
+				else if (heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] < heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y - 1)])
+				{
+					heightMap[(particleDropLocation.X - 1) * 128 + (particleDropLocation.Y - 1)] -= 1;
+				}
+				else
+				{
+					heightMap[particleDropLocation.X * 128 + particleDropLocation.Y] -= 1;
+				}
+			}
+			
+		}
+
+	}
+}
+
 //run the faulting algoritm on the terrain
 void TerrainMesh::Fault(int numberOfFaults, float initialFaultValue)
 {

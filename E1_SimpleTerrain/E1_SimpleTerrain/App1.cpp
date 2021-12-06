@@ -9,6 +9,7 @@ App1::App1()
 	light = nullptr;
 
 	faultMenuOpen = false;
+	particleDepoMenuOpen = false;
 }
 
 void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in, bool VSYNC, bool FULL_SCREEN)
@@ -120,7 +121,8 @@ void App1::gui()
 	ImGui::SliderInt( "Terrain Resolution", &terrainResolution, 2, 1024 );
 
 	FaultGUI();
-	
+	ParticleDepositionGUI();
+
 	if (ImGui::Button("Smoothen"))
 	{
 		m_Terrain->Smooth();
@@ -162,6 +164,37 @@ void App1::FaultGUI()
 		if (ImGui::Button("Close Menu"))
 		{
 			faultMenuOpen = false;
+		}
+	}
+}
+
+void App1::ParticleDepositionGUI()
+{
+	//modify the varibles for the particle deposition GUI
+	if (particleDepoMenuOpen == false)
+	{
+		if (ImGui::Button("Open Particle Deposition Menu"))
+		{
+			particleDepoMenuOpen = true;
+		}
+	}
+	else if (particleDepoMenuOpen == true)
+	{
+		ImGui::SliderInt("Number Of Particles Dropped", &numberOfParticlesDropped, 10, 2500);
+		ImGui::SliderInt("Width in X-Axis", &XWidth, 5, 30);
+		ImGui::SliderInt("Width in Y-Axis", &YWidth, 5, 30);
+		ImGui::Checkbox("Check to build terrain, Uncheck to remove terrain", &dropParticles);
+		ImGui::SliderInt("Number of Iterations", &iterations, 1, 100);
+
+		if (ImGui::Button("Apply Particle Deposition"))
+		{
+			m_Terrain->ParticleDeposition(numberOfParticlesDropped, XWidth, YWidth, dropParticles, iterations);
+			m_Terrain->Regenerate(renderer->getDevice(), renderer->getDeviceContext());
+		}
+
+		if (ImGui::Button("Close Menu"))
+		{
+			particleDepoMenuOpen = false;
 		}
 	}
 }

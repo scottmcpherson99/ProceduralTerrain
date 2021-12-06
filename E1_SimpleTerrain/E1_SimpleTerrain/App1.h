@@ -20,6 +20,7 @@ protected:
 	bool render();
 	void gui();
 	void FaultGUI();
+	void ParticleDepositionGUI();
 
 private:
 	LightShader* shader;
@@ -28,10 +29,19 @@ private:
 	Light* light;
 
 	int terrainResolution = 128;
-
+	
+	//faulting parameters
 	bool faultMenuOpen;
 	int totalFaults = 4;
 	float faultValue = 3;
+
+	//particle deposution parameters
+	bool particleDepoMenuOpen;
+	int numberOfParticlesDropped = 100;
+	int XWidth = 10;
+	int YWidth = 10;
+	bool dropParticles = true;
+	int iterations = 3;
 };
 
 #endif
