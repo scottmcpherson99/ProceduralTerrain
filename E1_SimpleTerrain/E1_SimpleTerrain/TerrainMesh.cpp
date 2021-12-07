@@ -445,6 +445,222 @@ void TerrainMesh::ParticleDeposition(int numberOfParticlesDropped, int XSize, in
 	}
 }
 
+
+//run the midpoint displacement algorithm
+void TerrainMesh::midPointDisplacement(int maxHeightOfCorners, float smoothnessOfTerrain)
+{
+
+	int rowSize = resolution;
+	float divideCorners = 1;
+	bool iterationComplete;
+	float averageCornerHeight;
+	int increaseOrDecrease;
+	float displacementValue = maxHeightOfCorners;
+	int counter;
+
+	//set the values of the maximum and minimum corners
+	TerrainPoint minCorner, maxCorner;
+	minCorner.X = 0;
+	minCorner.Y = 0;
+	maxCorner.X = resolution;
+	maxCorner.Y = resolution;
+
+
+	//initialise the first four corners
+	heightMap[minCorner.X + rowSize * minCorner.Y] = (rand() % maxHeightOfCorners);
+	heightMap[maxCorner.X + rowSize * minCorner.Y] = (rand() % maxHeightOfCorners);
+	heightMap[minCorner.X + rowSize * maxCorner.Y] = (rand() % maxHeightOfCorners);
+	heightMap[maxCorner.X + rowSize * maxCorner.Y] = (rand() % maxHeightOfCorners);
+
+	//run the diamond square algorithm until all the points have been filled
+	for (int i = 1; i < resolution; i *= 2)
+	{
+		maxCorner.X = resolution / divideCorners;
+		maxCorner.Y = resolution / divideCorners;
+		minCorner.X = 0;
+		minCorner.Y = 0;
+		iterationComplete = false;
+
+		//for each iteration of the diamond sqaure algorithm
+		while (iterationComplete == false)
+		{
+			//square step
+			averageCornerHeight = 0;
+			averageCornerHeight += heightMap[minCorner.X + rowSize * minCorner.Y];
+			averageCornerHeight += heightMap[maxCorner.X + rowSize * minCorner.Y];
+			averageCornerHeight += heightMap[minCorner.X + rowSize * maxCorner.Y];
+			averageCornerHeight += heightMap[maxCorner.X + rowSize * maxCorner.Y];//here
+
+			increaseOrDecrease = rand() % 2;
+
+			if (increaseOrDecrease == 0)
+			{
+				heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)] = (averageCornerHeight / 4) + displacementValue;
+			}
+			else if (increaseOrDecrease == 1)
+			{
+				heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)] = (averageCornerHeight / 4) - displacementValue;
+			}
+			if (maxCorner.X == 128)
+			{
+				if (maxCorner.Y == 128)
+				{
+					iterationComplete = true;
+					displacementValue /= 1.25;
+				}
+				else
+				{
+					minCorner.Y += 128 / divideCorners;
+					maxCorner.Y += 128 / divideCorners;
+					minCorner.X = 0;
+					maxCorner.X = 128 / divideCorners;
+				}
+			}
+			else
+			{
+				minCorner.X += 128 / divideCorners;
+				maxCorner.X += 128 / divideCorners;
+			}
+		}
+
+		maxCorner.X = resolution / divideCorners;
+		maxCorner.Y = resolution / divideCorners;
+		minCorner.X = 0;
+		minCorner.Y = 0;
+		iterationComplete = false;
+
+
+		while (iterationComplete == false)
+		{
+			//initial diamond step
+			//iteration 1
+			averageCornerHeight = 0;
+			averageCornerHeight += heightMap[minCorner.X + rowSize * minCorner.Y];//here
+			averageCornerHeight += heightMap[maxCorner.X + rowSize * minCorner.Y];
+			averageCornerHeight += heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)];
+			if (minCorner.Y != 0)
+			{
+				//averageCornerHeight += heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * (((maxCorner.Y + minCorner.Y) / 2) - (maxCorner.Y/2))];
+				counter = 3;
+			}
+			else
+			{
+				counter = 3;
+			}
+
+			increaseOrDecrease = rand() % 2 + 1;
+			if (increaseOrDecrease == 1)
+			{
+				heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * minCorner.Y] = (averageCornerHeight / counter) + displacementValue;
+			}
+			else if (increaseOrDecrease == 2)
+			{
+				heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * minCorner.Y] = (averageCornerHeight / counter) - displacementValue;
+			}
+
+
+			//iteration 2
+			averageCornerHeight = 0;
+			averageCornerHeight += heightMap[minCorner.X + rowSize * minCorner.Y];
+			averageCornerHeight += heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)];
+			averageCornerHeight += heightMap[minCorner.X + rowSize * maxCorner.Y];
+			if (minCorner.X != 0)
+			{
+				//averageCornerHeight += heightMap[(((maxCorner.X + minCorner.X) / 2) - (maxCorner.X / 2)) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)];
+				counter = 3;
+			}
+			else
+			{
+				counter = 3;
+			}
+			increaseOrDecrease = rand() % 2 + 1;
+			if (increaseOrDecrease == 1)
+			{
+				heightMap[minCorner.X + rowSize * ((maxCorner.Y + minCorner.Y) / 2)] = (averageCornerHeight / counter) + displacementValue;
+			}
+			else if (increaseOrDecrease == 2)
+			{
+				heightMap[minCorner.X + rowSize * ((maxCorner.Y + minCorner.Y) / 2)] = (averageCornerHeight / counter) - displacementValue;
+			}
+
+
+			//iteration 3
+			averageCornerHeight = 0;
+			averageCornerHeight += heightMap[minCorner.X + rowSize * maxCorner.Y];
+			averageCornerHeight += heightMap[maxCorner.X + rowSize * maxCorner.Y];
+			averageCornerHeight += heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)];
+			if (maxCorner.Y != 8)
+			{
+				//averageCornerHeight += heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * (((maxCorner.Y + minCorner.Y) / 2) + (maxCorner.Y / 2))];
+				counter = 3;
+			}
+			else
+			{
+				counter = 3;
+			}
+			increaseOrDecrease = rand() % 2 + 1;
+			if (increaseOrDecrease == 1)
+			{
+				heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * maxCorner.Y] = (averageCornerHeight / counter) + displacementValue;
+			}
+			else if (increaseOrDecrease == 2)
+			{
+				heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * maxCorner.Y] = (averageCornerHeight / counter) - displacementValue;
+			}
+
+
+			//iteration 4
+			averageCornerHeight = 0;
+			averageCornerHeight += heightMap[maxCorner.X + rowSize * minCorner.Y];
+			averageCornerHeight += heightMap[maxCorner.X + rowSize * maxCorner.Y];
+			averageCornerHeight += heightMap[((maxCorner.X + minCorner.X) / 2) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)];
+			if (maxCorner.X != 8)
+			{
+				//averageCornerHeight += heightMap[(((maxCorner.X + minCorner.X) / 2) + (maxCorner.X / 2)) + rowSize * ((maxCorner.Y + minCorner.Y) / 2)];
+				counter = 3;
+			}
+			else
+			{
+				counter = 3;
+			}
+
+			increaseOrDecrease = rand() % 2 + 1;
+			if (increaseOrDecrease == 1)
+			{
+				heightMap[maxCorner.X + rowSize * ((maxCorner.Y + minCorner.Y) / 2)] = (averageCornerHeight / counter) + displacementValue;
+			}
+			else if (increaseOrDecrease == 2)
+			{
+				heightMap[maxCorner.X + rowSize * ((maxCorner.Y + minCorner.Y) / 2)] = (averageCornerHeight / counter) - displacementValue;
+			}
+
+			if (maxCorner.X == 128)
+			{
+				if (maxCorner.Y == 128)
+				{
+					iterationComplete = true;
+					displacementValue /= 1.25;
+				}
+				else
+				{
+					minCorner.Y += 128 / divideCorners;
+					maxCorner.Y += 128 / divideCorners;
+					minCorner.X = 0;
+					maxCorner.X = 128 / divideCorners;
+				}
+			}
+			else
+			{
+				minCorner.X += 128 / divideCorners;
+				maxCorner.X += 128 / divideCorners;
+			}
+		}
+		divideCorners *= 2;
+	}
+	minCorner.X == 1;
+	
+}
+
 //run the faulting algoritm on the terrain
 void TerrainMesh::Fault(int numberOfFaults, float initialFaultValue)
 {

@@ -13,7 +13,7 @@ public:
 	void Flat();
 	void Smooth();
 	void ParticleDeposition(int numberOfParticlesDropped, int XSize, int YSize, bool dropOrRemove, int iterations);
-
+	void midPointDisplacement(int maxHeighOfCorners, float smoothnessOfTerrain);
 	const inline int GetResolution(){ return resolution; }
 
 protected:

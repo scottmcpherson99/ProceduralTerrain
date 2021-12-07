@@ -1,3 +1,32 @@
-﻿  App1.cpp
-D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\App1.cpp(158,87): warning C4305: 'argument': truncation from 'double' to 'float'
+﻿  TerrainMesh.cpp
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(27,48): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(28,58): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(182,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(50,38): warning C4101: 'indexBufferDesc': unreferenced local variable
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(51,25): warning C4101: 'vertexData': unreferenced local variable
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(51,37): warning C4101: 'indexData': unreferenced local variable
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(50,20): warning C4101: 'vertexBufferDesc': unreferenced local variable
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(323,86): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(458,26): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(470,59): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(471,59): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(472,59): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(473,59): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(478,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(479,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(513,40): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(514,40): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(516,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(521,39): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(522,39): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(526,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(527,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(646,40): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(647,40): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(649,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(654,39): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(655,39): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(660,14): warning C4553: '==': result of expression not used; did you intend '='?
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(717,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\ProceduralTerrain\E1_SimpleTerrain\E1_SimpleTerrain\TerrainMesh.cpp(745,27): warning C4305: '*=': truncation from 'double' to 'float'
   E1_SimpleTerrain.vcxproj -> D:\ProceduralTerrain\E1_SimpleTerrain\x64\Debug\E1_SimpleTerrain.exe

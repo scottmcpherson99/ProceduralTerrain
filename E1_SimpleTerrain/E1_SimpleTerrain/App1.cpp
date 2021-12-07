@@ -10,6 +10,7 @@ App1::App1()
 
 	faultMenuOpen = false;
 	particleDepoMenuOpen = false;
+	midPointMenuOpen = false;
 }
 
 void App1::init(HINSTANCE hinstance, HWND hwnd, int screenWidth, int screenHeight, Input *in, bool VSYNC, bool FULL_SCREEN)
@@ -122,6 +123,7 @@ void App1::gui()
 
 	FaultGUI();
 	ParticleDepositionGUI();
+	MidPointDisplacementGUI();
 
 	if (ImGui::Button("Smoothen"))
 	{
@@ -196,5 +198,34 @@ void App1::ParticleDepositionGUI()
 		{
 			particleDepoMenuOpen = false;
 		}
+	}
+}
+
+void App1::MidPointDisplacementGUI()
+{
+	//modify the varibles for the midpoint displacement GUI
+	if (midPointMenuOpen == false)
+	{
+		if (ImGui::Button("Open Midpoint Displacement Menu"))
+		{
+			midPointMenuOpen = true;
+		}
+	}
+	else if (midPointMenuOpen == true)
+	{
+		ImGui::SliderInt("Starting Height Value of Corners", &maxHeightOfCorners, 1, 30);
+		ImGui::SliderFloat("Smoothness of Terrain (Lower Value = Smoother Terrain)", &smoothnessOfTerrain, 1, 20, "Pos : (%.3f)", 1.0f);
+
+		if (ImGui::Button("Apply Midpoint Displacement"))
+		{
+			m_Terrain->midPointDisplacement(maxHeightOfCorners, smoothnessOfTerrain);
+			m_Terrain->Regenerate(renderer->getDevice(), renderer->getDeviceContext());
+		}
+		if (ImGui::Button("Close Menu"))
+		{
+			midPointMenuOpen = false;
+		}
+
+
 	}
 }

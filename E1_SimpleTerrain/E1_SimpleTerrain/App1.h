@@ -21,6 +21,7 @@ protected:
 	void gui();
 	void FaultGUI();
 	void ParticleDepositionGUI();
+	void MidPointDisplacementGUI();
 
 private:
 	LightShader* shader;
@@ -42,6 +43,11 @@ private:
 	int YWidth = 10;
 	bool dropParticles = true;
 	int iterations = 3;
+
+	//midpointDisplacement parameters
+	bool midPointMenuOpen;
+	int maxHeightOfCorners = 5;
+	float smoothnessOfTerrain = 2;
 };
 
 #endif
